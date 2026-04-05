@@ -22,9 +22,9 @@
     "eject": "react-scripts eject"
   },
   "engines": {
-    "node": "20.x",
-    "npm": "11.x"
-  },
+  "node": "20.x",
+  "npm": ">=10"
+},
   "eslintConfig": {
     "extends": ["react-app"]
   },
