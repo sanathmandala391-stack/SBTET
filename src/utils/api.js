@@ -27,18 +27,15 @@
 
 // export default api;
 
-
 import axios from 'axios';
 
-// IMPORTANT: Check if your backend uses '/api' prefix. 
-// If your Render route is 'https://sbtet-backend-1.onrender.com/auth/login', 
-// use the URL without /api.
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'https://sbtet-backend-1.onrender.com/api',
+  // This MUST match the /api prefix in your Java SecurityConfig
+  baseURL: 'https://sbtet-backend-1.onrender.com/api', 
   headers: { 'Content-Type': 'application/json' }
 });
 
-// Attach token to every request automatically
+// Attach token to every request
 api.interceptors.request.use(cfg => {
   const token = localStorage.getItem('sbtet_token');
   if (token) {
@@ -47,7 +44,7 @@ api.interceptors.request.use(cfg => {
   return cfg;
 });
 
-// Handle 401 (Unauthorized) - logs user out if token expires
+// Auto-logout on 401
 api.interceptors.response.use(
   res => res,
   err => {
