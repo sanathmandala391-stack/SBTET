@@ -269,6 +269,12 @@ const STATUS_COLOR = {
   '-':'#bdbdbd',   // light grey
 };
 
+function getAttendanceCalculatedTime() {
+  const d = new Date();
+  d.setHours(5, 0, 0, 0);  // 5:00:00 AM today
+  return d;                  // e.g. "4 Apr 2026, 05:00 AM"
+}
+
 export default function StudentAttendance() {
   const { user }           = useAuth();
   const [data, setData]    = useState(null);
@@ -379,7 +385,7 @@ export default function StudentAttendance() {
               {percentage.toFixed(2)}
             </td>
             <td style={{ ...dCell, fontSize:12 }}>
-              {new Date().toLocaleString('en-IN', {
+              {getAttendanceCalculatedTime().toLocaleString('en-IN', {
                 day:'numeric', month:'short', year:'numeric',
                 hour:'2-digit', minute:'2-digit', hour12:true
               })}
