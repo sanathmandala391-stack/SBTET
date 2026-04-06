@@ -5,12 +5,32 @@ import toast from 'react-hot-toast';
 import './AdminPages.css';
 
 const BRANCHES = [
-  {code:'CS',name:'Computer Science'},{code:'ME',name:'Mechanical Engineering'},
-  {code:'CE',name:'Civil Engineering'},{code:'EE',name:'Electrical Engineering'},
-  {code:'EC',name:'Electronics & Communication'},{code:'IT',name:'Information Technology'},
-  {code:'CH',name:'Chemical Technology'},{code:'TT',name:'Textile Technology'},
-  {code:'MET',name:'Metallurgy'},{code:'PKG',name:'Packaging Technology'},
-  {code:'HMCT',name:'Hotel Management'}
+  { code: 'AA', name: 'Architectural Assistantship' },
+  { code: 'AI', name: 'Artificial Intelligence and Machine Learning' },
+  { code: 'AU', name: 'Automobile Engineering' },
+  { code: 'BM', name: 'Biomedical Engineering' },
+  { code: 'CCB', name: 'Cloud Computing and Big Data' },
+  { code: 'CCP', name: 'Commercial and Computer Practice' },
+  { code: 'CE', name: 'Civil Engineering' },
+  { code: 'CH', name: 'Chemical Engineering' },
+  { code: 'CPS', name: 'Cyber Physical Systems and Security' },
+  { code: 'CS', name: 'Computer Science and Engineering' },
+  { code: 'EC', name: 'Electronics & Communication Engineering' },
+  { code: 'EE', name: 'Electrical and Electronics Engineering' },
+  { code: 'EEV', name: 'Electrical Engineering and Electric Vehicle Technology' },
+  { code: 'EI', name: 'Electronics and Instrumentation Engineering' },
+  { code: 'ES', name: 'Embedded Systems' },
+  { code: 'EV', name: 'Electronics and Video Engineering' },
+  { code: 'HS', name: 'Home Science' },
+  { code: 'LF', name: 'Leather and Fashion Technology' },
+  { code: 'LG', name: 'Leather Goods & Footwear Technology' },
+  { code: 'ME', name: 'Mechanical Engineering' },
+  { code: 'MN', name: 'Mining Engineering' },
+  { code: 'MT', name: 'Metallurgical Engineering' },
+  { code: 'PH', name: 'Pharmacy' },
+  { code: 'PK', name: 'Packaging Technology' },
+  { code: 'PT', name: 'Printing Technology' },
+  { code: 'TT', name: 'Textile Technology' }
 ];
 
 export default function RegisterCollege() {
