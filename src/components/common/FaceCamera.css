@@ -1,4 +1,4 @@
-.face-camera { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+/* .face-camera { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 
 .camera-wrapper {
   position: relative; width: 100%; max-width: 500px;
@@ -9,8 +9,9 @@
 
 .camera-video {
   width: 100%; height: 100%; object-fit: cover;
-  transform: scaleX(-1); /* Mirror effect */
+  transform: scaleX(-1); /* Mirror effect 
 }
+
 
 .camera-canvas {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -27,6 +28,7 @@
 .camera-overlay.error { background: rgba(198,40,40,0.2); }
 
 /* Face guide frame */
+/*
 .camera-wrapper::before {
   content: '';
   position: absolute; top: 50%; left: 50%;
@@ -53,4 +55,260 @@
 
 .blink-indicator { display: flex; align-items: center; gap: 12px; justify-content: center; }
 .blink-dot { font-size: 24px; opacity: 0.3; transition: opacity 0.3s; }
-.blink-dot.done { opacity: 1; filter: drop-shadow(0 0 6px #2e7d32); }
+.blink-dot.done { opacity: 1; filter: drop-shadow(0 0 6px #2e7d32); } */
+
+
+
+/*new Css*/
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   FaceCamera — Circular scanner UI
+═══════════════════════════════════════════════════════════════════ */
+
+.fc-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  user-select: none;
+}
+
+/* ── Big circular frame ── */
+.fc-circle {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #000;
+  /* Default ring */
+  box-shadow:
+    0 0 0 6px rgba(255,255,255,0.1),
+    0 0 0 8px rgba(255,255,255,0.05);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* Ring colors via border */
+.fc-circle {
+  border: 5px solid transparent;
+}
+
+.ring-grey {
+  border-color: rgba(255,255,255,0.25);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.08), 0 8px 40px rgba(0,0,0,0.5);
+}
+
+/* Red ring — no face detected */
+.ring-red {
+  border-color: #ef5350;
+  box-shadow:
+    0 0 0 4px rgba(239,83,80,0.25),
+    0 0 24px rgba(239,83,80,0.4),
+    0 8px 40px rgba(0,0,0,0.5);
+  animation: pulse-red 1.5s ease infinite;
+}
+
+/* Yellow ring — face detected, waiting for blinks */
+.ring-yellow {
+  border-color: #fdd835;
+  box-shadow:
+    0 0 0 4px rgba(253,216,53,0.25),
+    0 0 24px rgba(253,216,53,0.35),
+    0 8px 40px rgba(0,0,0,0.5);
+}
+
+/* Green ring — verified ✓ */
+.ring-green {
+  border-color: #43a047;
+  box-shadow:
+    0 0 0 4px rgba(67,160,71,0.3),
+    0 0 32px rgba(67,160,71,0.5),
+    0 8px 40px rgba(0,0,0,0.5);
+  animation: pulse-green 1s ease 2;
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(239,83,80,0.25), 0 0 24px rgba(239,83,80,0.4), 0 8px 40px rgba(0,0,0,0.5); }
+  50%       { box-shadow: 0 0 0 8px rgba(239,83,80,0.15), 0 0 40px rgba(239,83,80,0.6), 0 8px 40px rgba(0,0,0,0.5); }
+}
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(67,160,71,0.3), 0 0 32px rgba(67,160,71,0.5), 0 8px 40px rgba(0,0,0,0.5); }
+  50%       { box-shadow: 0 0 0 12px rgba(67,160,71,0.15), 0 0 56px rgba(67,160,71,0.7), 0 8px 40px rgba(0,0,0,0.5); }
+}
+
+/* ── Video fills the circle ── */
+.fc-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); /* mirror */
+}
+
+/* ── Landmark canvas ── */
+.fc-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+
+/* ── Scanning line animation ── */
+.fc-scan-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,220,0,0.8) 40%,
+    rgba(255,255,255,1) 50%,
+    rgba(255,220,0,0.8) 60%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(255,220,0,0.6);
+  animation: scan 2.5s ease-in-out infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+@keyframes scan {
+  0%   { top: 0%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* ── Center overlay (spinner / checkmark) ── */
+.fc-center-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 20;
+  gap: 12px;
+}
+
+.fc-check-overlay {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Loading spinner */
+.fc-spinner {
+  width: 52px;
+  height: 52px;
+  border: 4px solid rgba(255,255,255,0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.fc-loading-text {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Big checkmark on verified */
+.fc-checkmark {
+  font-size: 88px;
+  color: #43a047;
+  font-weight: 900;
+  line-height: 1;
+  animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  filter: drop-shadow(0 0 20px rgba(67,160,71,0.8));
+}
+@keyframes pop-in {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* ── Corner brackets (scanner aesthetic) ── */
+.fc-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: rgba(255,255,255,0.7);
+  border-style: solid;
+  z-index: 15;
+  pointer-events: none;
+}
+.fc-tl { top: 16px;  left: 16px;  border-width: 3px 0 0 3px; }
+.fc-tr { top: 16px;  right: 16px; border-width: 3px 3px 0 0; }
+.fc-bl { bottom: 16px; left: 16px;  border-width: 0 0 3px 3px; }
+.fc-br { bottom: 16px; right: 16px; border-width: 0 3px 3px 0; }
+
+/* ── Status message ── */
+.fc-message {
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  max-width: 340px;
+  transition: background 0.3s, color 0.3s;
+}
+.fc-msg-grey   { background: #eceff1; color: #546e7a; }
+.fc-msg-red    { background: #ffebee; color: #c62828; }
+.fc-msg-yellow { background: #fffde7; color: #f57f17; }
+.fc-msg-green  { background: #e8f5e9; color: #2e7d32; }
+
+/* ── Blink progress row ── */
+.fc-blink-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.fc-blink-dot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.35;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.fc-blink-dot.fc-blink-done {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.fc-eye-icon { font-size: 28px; line-height: 1; }
+.fc-blink-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fc-blink-count {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1a237e;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* ── Verified bounce ── */
+.fc-verified {
+  animation: bounce-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+@keyframes bounce-in {
+  0%   { transform: scale(0.9); }
+  60%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .fc-circle { width: 260px; height: 260px; }
+}
