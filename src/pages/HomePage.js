@@ -425,7 +425,7 @@ const SLIDES = [
     pretitle: 'GPS Geofencing Technology',
     title: <>Location-Based<br /><span>Attendance Marking</span></>,
     desc: 'Attendance can only be marked from within your college premises — a 200-metre GPS boundary enforced automatically.',
-    img: '/sb2.jpg',
+    img: '/sb11.webp',
   },
 ];
 
