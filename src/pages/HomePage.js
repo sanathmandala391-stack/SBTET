@@ -777,6 +777,7 @@ useEffect(() => {
         </div>
         <div className="gov-footer-bottom">
           &copy; 2026 State Board of Technical Education and Training, Telangana — All rights reserved.
+          <p>Developed By Mandala Sanathkumar-CSE</p>
         </div>
       </footer>
 
