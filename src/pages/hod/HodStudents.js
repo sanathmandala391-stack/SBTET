@@ -23,7 +23,7 @@ export function HodStudents() {
 
   return (
     <div className="page fade-in">
-      <h1 style={{marginBottom:24}}>All Students 👥</h1>
+      <h1 style={{marginBottom:24}}>All Students </h1>
       <div className="filters-bar">
         <input className="search-input" placeholder="Search name or PIN..." value={search} onChange={e => setSearch(e.target.value)} />
         <select className="filter-select" value={branch} onChange={e => setBranch(e.target.value)}>
@@ -48,16 +48,16 @@ export function HodStudents() {
                 </div>
                 <div style={{textAlign:'right'}}>
                   <div style={{fontSize:20,fontWeight:800,color:pctColor(p),fontFamily:'var(--font)'}}>{typeof p === 'number' ? `${p.toFixed(1)}%` : p}</div>
-                  <div style={{fontSize:11,color:'var(--text-muted)'}}>This Month</div>
+                  <div style={{fontSize:11,color:'var(--gov-muted)'}}>This Month</div>
                 </div>
-                <div style={{fontSize:13,color:'var(--text-muted)',textAlign:'right'}}>
+                <div style={{fontSize:13,color:'var(--gov-muted)',textAlign:'right'}}>
                   <div>{s.summary?.daysPresent ?? '—'} days present</div>
                   <div>{s.summary?.totalWorkingDays ?? '—'} working</div>
                 </div>
               </div>
             );
           })}
-          {filtered.length === 0 && <div style={{textAlign:'center',padding:48,color:'var(--text-muted)'}}>No students found</div>}
+          {filtered.length === 0 && <div style={{textAlign:'center',padding:48,color:'var(--gov-muted)'}}>No students found</div>}
         </div>
       )}
     </div>

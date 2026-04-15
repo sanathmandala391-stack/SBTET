@@ -1,13 +1,14 @@
 import React from 'react';
+import { useState,useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
-
+import Loader from './components/common/Loader';
 // Pages
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-//new//
+
 // Student
 import StudentDashboard from './pages/student/StudentDashboard';
 import StudentAttendance from './pages/student/StudentAttendance';
@@ -92,12 +93,42 @@ function AppRoutes() {
   );
 }
 
+// export default function App() {
+//   return (
+//     <AuthProvider>
+//       <BrowserRouter>
+//         <AppRoutes />
+//         <Toaster position="top-right" toastOptions={{ duration: 3500, style: { fontFamily: 'Open Sans, Arial, sans-serif', fontSize: 14 } }} />
+//       </BrowserRouter>
+//     </AuthProvider>
+//   );
+// }
+
+
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Force the loader to stay for 5 seconds
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+
+    // Cleanup timer if component unmounts
+    return () => clearTimeout(timer);
+  }, []);
+   if (loading) return <Loader />;
   return (
     <AuthProvider>
       <BrowserRouter>
         <AppRoutes />
-        <Toaster position="top-right" toastOptions={{ duration: 3500, style: { fontFamily: 'DM Sans, sans-serif', fontSize: 14 } }} />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3500,
+            style: { fontFamily: 'Open Sans, Arial, sans-serif', fontSize: 14 }
+          }}
+        />
       </BrowserRouter>
     </AuthProvider>
   );

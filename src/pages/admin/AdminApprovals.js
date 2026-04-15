@@ -7,79 +7,75 @@ export default function AdminApprovals() {
   const [pending, setPending] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const load = () => {
+    setLoading(true);
     api.get('/admin/approvals').then(r => setPending(r.data)).finally(() => setLoading(false));
-  }, []);
+  };
+  useEffect(load, []);
 
   const handleAction = async (userId, isApproved) => {
     try {
       await api.put(`/admin/users/${userId}/approval`, { isApproved });
       toast.success(isApproved ? 'User approved!' : 'User rejected.');
-      setPending(p => p.filter(u => u.id !== userId));
+      setPending(p => p.filter(u => (u.id||u._id) !== userId));
     } catch { toast.error('Action failed.'); }
   };
 
-  const roleColors = { student: '#1a237e', faculty: '#1b5e20', hod: '#4a148c' };
-
   return (
     <div className="page fade-in">
-      <h1 style={{ marginBottom: 8 }}>Pending Approvals ✅</h1>
-      <p style={{ color: 'var(--text-muted)', marginBottom: 28 }}>
-        {pending.length > 0 ? `${pending.length} users awaiting approval across all colleges.` : 'All users are approved.'}
-      </p>
+      <div style={{ background:'#1a237e', color:'#fff', padding:'10px 18px', borderRadius:'4px 4px 0 0', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+        <span style={{ fontSize:15, fontWeight:700 }}> Pending Approvals — Admin</span>
+        <span style={{ background:'#e65100', color:'#fff', padding:'3px 12px', borderRadius:3, fontSize:12, fontWeight:700 }}>{pending.length} Pending</span>
+      </div>
+      <div style={{ background:'#e8eaf6', padding:'7px 16px', fontSize:12, color:'#546e7a', borderBottom:'1px solid #dee2e6', marginBottom:16 }}>
+        Home &rsaquo; Admin &rsaquo; Approvals
+      </div>
 
-      {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: 60 }}><div className="spinner" /></div>
-      ) : pending.length === 0 ? (
-        <div className="card" style={{ padding: 60, textAlign: 'center' }}>
-          <div style={{ fontSize: 56, marginBottom: 16 }}>🎉</div>
-          <h3 style={{ color: 'var(--primary)' }}>No Pending Approvals</h3>
-          <p style={{ color: 'var(--text-muted)', marginTop: 8 }}>All registered users have been reviewed.</p>
-        </div>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {pending.map(u => (
-            <div key={u.id} className="card" style={{ padding: '20px 24px', display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-              <div style={{
-                width: 52, height: 52, borderRadius: '50%', flexShrink: 0,
-                background: `linear-gradient(135deg, ${roleColors[u.role] || '#555'}, #888)`,
-                color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontWeight: 800, fontSize: 22
-              }}>{u.name?.charAt(0)}</div>
-
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                  <span style={{ fontWeight: 700, fontSize: 16 }}>{u.name}</span>
-                  <span style={{
-                    padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 700,
-                    background: `${roleColors[u.role]}18`, color: roleColors[u.role]
-                  }}>{u.role?.toUpperCase()}</span>
-                </div>
-                <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>
-                  📧 {u.email}
-                  {u.pinNumber && ` • PIN: ${u.pinNumber}`}
-                  {u.branch && ` • ${u.branch} ${u.semester}`}
-                  {u.department && ` • Dept: ${u.department}`}
-                </div>
-                <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2 }}>
-                  🏫 {u.college?.name || 'Unknown College'} ({u.collegeCode})
-                  &nbsp;•&nbsp; 📅 {new Date(u.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
-                </div>
-              </div>
-
-              {u.faceImageUrl && (
-                <img src={u.faceImageUrl} alt="face"
-                  style={{ width: 60, height: 60, borderRadius: 10, objectFit: 'cover', border: '2px solid var(--border)', flexShrink: 0 }} />
-              )}
-
-              <div style={{ display: 'flex', gap: 10 }}>
-                <button className="btn btn-danger" style={{ padding: '9px 22px' }} onClick={() => handleAction(u.id, false)}>✗ Reject</button>
-                <button className="btn btn-success" style={{ padding: '9px 22px' }} onClick={() => handleAction(u.id, true)}>✓ Approve</button>
-              </div>
+      {loading
+        ? <div style={{ display:'flex', justifyContent:'center', padding:60 }}><div className="spinner"/></div>
+        : pending.length === 0
+          ? <div className="card" style={{ padding:56, textAlign:'center' }}>
+              <div style={{ fontSize:48, marginBottom:14 }}></div>
+              <h3 style={{ color:'#1a237e', marginBottom:6 }}>All Caught Up!</h3>
+              <p style={{ color:'#6c757d', fontSize:13 }}>No pending approvals at this time.</p>
             </div>
-          ))}
-        </div>
-      )}
+          : <div className="card" style={{ overflow:'auto' }}>
+              <table style={{ width:'100%', borderCollapse:'collapse', fontSize:13 }}>
+                <thead>
+                  <tr>
+                    {['#','Name','Role','College','Email','Department / PIN','Registered','Actions'].map((h,i) => (
+                      <th key={i} style={{ background:'#1a237e', color:'#fff', padding:'9px 12px', textAlign:'left', fontSize:11, textTransform:'uppercase', letterSpacing:0.4, fontWeight:700, borderRight:'1px solid #283593', whiteSpace:'nowrap' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {pending.map((u,i) => (
+                    <tr key={u.id||u._id} style={{ borderBottom:'1px solid #dee2e6', background: i%2===0 ? '#fff' : '#f8f9fb' }}>
+                      <td style={{ padding:'9px 12px', color:'#6c757d' }}>{i+1}</td>
+                      <td style={{ padding:'9px 12px', fontWeight:700 }}>{u.name}</td>
+                      <td style={{ padding:'9px 12px' }}>
+                        <span style={{ background:'#fff8e1', color:'#c8a000', padding:'2px 9px', borderRadius:3, fontSize:11, fontWeight:700, border:'1px solid #ffe082' }}>
+                          {u.role?.toUpperCase()}
+                        </span>
+                      </td>
+                      <td style={{ padding:'9px 12px', fontSize:12 }}>{u.college?.collegeName||u.collegeCode||'—'}</td>
+                      <td style={{ padding:'9px 12px', fontSize:12 }}>{u.email}</td>
+                      <td style={{ padding:'9px 12px', fontSize:12 }}>{u.department||u.pinNumber||'—'}</td>
+                      <td style={{ padding:'9px 12px', fontSize:11, color:'#6c757d', whiteSpace:'nowrap' }}>
+                        {new Date(u.createdAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}
+                      </td>
+                      <td style={{ padding:'9px 12px' }}>
+                        <div style={{ display:'flex', gap:6 }}>
+                          <button className="btn btn-success btn-sm" style={{ padding:'5px 12px', fontSize:11 }} onClick={() => handleAction(u.id||u._id, true)}> Approve</button>
+                          <button className="btn btn-danger btn-sm"  style={{ padding:'5px 12px', fontSize:11 }} onClick={() => handleAction(u.id||u._id, false)}> Reject</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+      }
     </div>
   );
 }

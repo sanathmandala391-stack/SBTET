@@ -94,12 +94,12 @@ export default function RegisterCollege() {
   return (
     <div className="page fade-in">
       <button className="btn btn-outline" style={{marginBottom:24}} onClick={() => navigate('/admin/colleges')}>← Back</button>
-      <h1 style={{marginBottom:8}}>Register New College 🏫</h1>
-      <p style={{color:'var(--text-muted)',marginBottom:32}}>Add a polytechnic college to the SBTET attendance system.</p>
+      <h1 style={{marginBottom:8}}>Register New College </h1>
+      <p style={{color:'var(--gov-muted)',marginBottom:32}}>Add a polytechnic college to the SBTET attendance system.</p>
 
       <form onSubmit={handleSubmit}>
         <div className="card" style={{padding:32,marginBottom:20}}>
-          <h3 style={{color:'var(--primary)',marginBottom:20}}>Basic Information</h3>
+          <h3 style={{color:'var(--blue-dark)',marginBottom:20}}>Basic Information</h3>
           <div className="reg-form">
             <div className="grid-2">
               <div className="form-group">
@@ -139,9 +139,9 @@ export default function RegisterCollege() {
         </div>
 
         <div className="card" style={{padding:32,marginBottom:20}}>
-          <h3 style={{color:'var(--primary)',marginBottom:8}}>📍 GPS Location (for Geofencing)</h3>
-          <p style={{fontSize:14,color:'var(--text-muted)',marginBottom:20}}>Students can only mark attendance within {form.radius}m of this location.</p>
-          <div className="map-hint">💡 Click "Detect My Location" while you are at the college, or enter coordinates manually from Google Maps.</div>
+          <h3 style={{color:'var(--blue-dark)',marginBottom:8}}> GPS Location (for Geofencing)</h3>
+          <p style={{fontSize:14,color:'var(--gov-muted)',marginBottom:20}}>Students can only mark attendance within {form.radius}m of this location.</p>
+          <div className="map-hint"> Click "Detect My Location" while you are at the college, or enter coordinates manually from Google Maps.</div>
           <div style={{display:'flex',gap:12,flexWrap:'wrap',marginTop:16}}>
             <div className="form-group" style={{flex:1}}>
               <label className="form-label">Latitude *</label>
@@ -157,22 +157,22 @@ export default function RegisterCollege() {
             </div>
           </div>
           <button type="button" className="btn btn-primary" style={{marginTop:12}} onClick={detectLocation} disabled={detectingLoc}>
-            {detectingLoc ? '📡 Detecting...' : '📍 Detect My Location'}
+            {detectingLoc ? ' Detecting...' : ' Detect My Location'}
           </button>
           {form.latitude && form.longitude && (
-            <div style={{marginTop:12,fontSize:13,color:'#2e7d32',fontWeight:600}}>✓ Location set: {form.latitude}, {form.longitude}</div>
+            <div style={{marginTop:12,fontSize:13,color:'#2e7d32',fontWeight:600}}> Location set: {form.latitude}, {form.longitude}</div>
           )}
         </div>
 
         <div className="card" style={{padding:32,marginBottom:28}}>
-          <h3 style={{color:'var(--primary)',marginBottom:16}}>Branches Offered</h3>
+          <h3 style={{color:'var(--blue-dark)',marginBottom:16}}>Branches Offered</h3>
           <div style={{display:'flex',flexWrap:'wrap',gap:10}}>
             {BRANCHES.map(b => (
               <button key={b.code} type="button"
                 style={{padding:'8px 16px',borderRadius:8,fontSize:13,fontWeight:600,border:'2px solid',
-                  borderColor: selectedBranches.includes(b.code) ? 'var(--primary)' : 'var(--border)',
-                  background: selectedBranches.includes(b.code) ? 'var(--primary)' : '#fff',
-                  color: selectedBranches.includes(b.code) ? '#fff' : 'var(--text-muted)',
+                  borderColor: selectedBranches.includes(b.code) ? 'var(--blue-dark)' : 'var(--gov-border)',
+                  background: selectedBranches.includes(b.code) ? 'var(--blue-dark)' : '#fff',
+                  color: selectedBranches.includes(b.code) ? '#fff' : 'var(--gov-muted)',
                   cursor:'pointer',transition:'.2s'}}
                 onClick={() => toggleBranch(b.code)}>
                 {b.code} — {b.name}
@@ -182,7 +182,7 @@ export default function RegisterCollege() {
         </div>
 
         <button type="submit" className="btn btn-accent" style={{padding:'14px 36px',fontSize:16}} disabled={loading}>
-          {loading ? 'Registering...' : '🏫 Register College'}
+          {loading ? 'Registering...' : ' Register College'}
         </button>
       </form>
     </div>

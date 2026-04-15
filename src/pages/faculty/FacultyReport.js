@@ -46,8 +46,8 @@ export default function FacultyReport() {
 
   return (
     <div className="page fade-in">
-      <h1 style={{marginBottom:8}}>Monthly Reports 📋</h1>
-      <p style={{color:'var(--text-muted)',marginBottom:28}}>Generate and download attendance reports by month.</p>
+      <h1 style={{marginBottom:8}}>Monthly Reports </h1>
+      <p style={{color:'var(--gov-muted)',marginBottom:28}}>Generate and download attendance reports by month.</p>
 
       <div className="card" style={{padding:24,marginBottom:24}}>
         <div style={{display:'flex',gap:12,flexWrap:'wrap',alignItems:'flex-end'}}>
@@ -78,17 +78,17 @@ export default function FacultyReport() {
             </select>
           </div>
           <button className="btn btn-primary" style={{padding:'12px 24px'}} onClick={fetchReport} disabled={loading}>
-            {loading ? '...' : '📊 Generate Report'}
+            {loading ? '...' : ' Generate Report'}
           </button>
           {report?.length > 0 && (
-            <button className="btn btn-accent" style={{padding:'12px 20px'}} onClick={exportCSV}>⬇️ Export CSV</button>
+            <button className="btn btn-accent" style={{padding:'12px 20px'}} onClick={exportCSV}> Export CSV</button>
           )}
         </div>
       </div>
 
       {report && (
         <div className="card" style={{overflow:'auto'}}>
-          <div style={{padding:'16px 20px',borderBottom:'1px solid var(--border)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div style={{padding:'16px 20px',borderBottom:'1px solid var(--gov-border)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
             <strong>{MONTHS[month-1]} {year} — {report.length} students</strong>
           </div>
           <table className="report-table">

@@ -44,8 +44,13 @@ export default function HodToday() {
     <div className="page fade-in">
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24,flexWrap:'wrap',gap:12}}>
         <div>
-          <h1>Today's Attendance 📅</h1>
-          <p style={{color:'var(--text-muted)',marginTop:4}}>{new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</p>
+          <div style={{ background:'#1a237e', color:'#fff', padding:'10px 18px', borderRadius:'4px 4px 0 0', marginBottom:0 }}>
+        <span style={{ fontSize:15, fontWeight:700 }}> Today's Attendance</span>
+      </div>
+      <div style={{ background:'#e8eaf6', padding:'7px 16px', fontSize:12, color:'#546e7a', borderBottom:'1px solid #dee2e6', marginBottom:16 }}>
+        Home › HOD › Today's Attendance
+      </div>
+          <p style={{color:'var(--gov-muted)',marginTop:4}}>{new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</p>
         </div>
         <select className="filter-select" value={branch} onChange={e => setBranch(e.target.value)}>
           <option value="">All Branches</option>
@@ -65,7 +70,7 @@ export default function HodToday() {
             <div key={s.tab} className="card" style={{padding:20,borderTop:`3px solid ${s.color}`,cursor:'pointer',background: activeTab===s.tab?s.bg:'#fff'}}
               onClick={() => setActiveTab(s.tab)}>
               <div style={{fontFamily:'var(--font)',fontSize:32,fontWeight:800,color:s.color}}>{s.val || 0}</div>
-              <div style={{fontSize:13,color:'var(--text-muted)',fontWeight:500}}>{s.label}</div>
+              <div style={{fontSize:13,color:'var(--gov-muted)',fontWeight:500}}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -83,7 +88,7 @@ export default function HodToday() {
       {loading ? <div style={{display:'flex',justifyContent:'center',padding:60}}><div className="spinner"/></div> : (
         <div style={{display:'flex',flexDirection:'column',gap:8}}>
           {lists[activeTab].length === 0 ? (
-            <div style={{textAlign:'center',padding:48,color:'var(--text-muted)',fontSize:15}}>No students in this category today</div>
+            <div style={{textAlign:'center',padding:48,color:'var(--gov-muted)',fontSize:15}}>No students in this category today</div>
           ) : lists[activeTab].map(s => {
             const status = s.todayRecord?.status || (activeTab==='absent'?'A':'-');
             return (
@@ -120,8 +125,8 @@ function OverrideModal({ data, onClose, onSubmit }) {
   return (
     <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:9999}}>
       <div className="card" style={{padding:32,maxWidth:400,width:'90%'}}>
-        <h3 style={{marginBottom:8,color:'var(--primary)'}}>Override Attendance</h3>
-        <p style={{fontSize:14,color:'var(--text-muted)',marginBottom:20}}>Student: <strong>{data.name}</strong> | Current: <strong>{data.currentStatus}</strong></p>
+        <h3 style={{marginBottom:8,color:'var(--blue-dark)'}}>Override Attendance</h3>
+        <p style={{fontSize:14,color:'var(--gov-muted)',marginBottom:20}}>Student: <strong>{data.name}</strong> | Current: <strong>{data.currentStatus}</strong></p>
         <div className="form-group" style={{marginBottom:16}}>
           <label className="form-label">New Status</label>
           <select className="form-input" value={newStatus} onChange={e => setNewStatus(e.target.value)}>

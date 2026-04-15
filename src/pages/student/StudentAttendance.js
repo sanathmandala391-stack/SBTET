@@ -180,7 +180,7 @@
 //           </table>
 //         </div>
 //       ) : (
-//         <div style={{textAlign:'center',padding:48,color:'var(--text-muted)'}}>
+//         <div style={{textAlign:'center',padding:48,color:'var(--gov-muted)'}}>
 //           No attendance records found yet.
 //         </div>
 //       )}
@@ -218,7 +218,7 @@
 //       {/* Print Button */}
 //       <div style={{textAlign:'right',marginTop:24}}>
 //         <button className="btn btn-primary" style={{padding:'10px 32px'}} onClick={() => window.print()}>
-//           🖨️ Print
+//            Print
 //         </button>
 //       </div>
 
@@ -300,7 +300,7 @@
 //   const monthlyData = data?.monthlyData || [];
 //   const studentInfo = data?.student     || {};
 
-//   // ── Core numbers ─────────────────────────────────────────────────────────
+//   //  Core numbers 
 //   const workingDays      = stats.workingDays      || 0;
 //   const effectivePresent = stats.effectivePresent || 0;  // present + halfDays
 //   const presentDays      = stats.presentDays      || 0;
@@ -308,7 +308,7 @@
 //   const absentDays       = stats.absentDays       || 0;
 //   const percentage       = parseFloat(stats.percentage || 0);
 
-//   // ── Detention status ─────────────────────────────────────────────────────
+//   //  Detention status 
 //   const detentionStatus = stats.detentionStatus ||
 //     (percentage >= 75 ? 'ELIGIBLE' : percentage >= 65 ? 'CONDONATION' : 'DETAINED');
 
@@ -329,7 +329,7 @@
 //   return (
 //     <div className="page fade-in" style={{ maxWidth:1120, margin:'0 auto', padding:'24px 16px 80px', fontFamily:'Arial, sans-serif' }}>
 
-//       {/* ── Official Header ─────────────────────────────────────────────── */}
+//       {/*  Official Header  */}
 //       <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:18, marginBottom:16, paddingBottom:12, borderBottom:'2px solid #1a237e' }}>
 //         <img
 //           src="https://www.sbtet.telangana.gov.in/SBTET/images/SBTET%20LOGO.png"
@@ -347,7 +347,7 @@
 //         </div>
 //       </div>
 
-//       {/* ── Student Info ─────────────────────────────────────────────────── */}
+//       {/*  Student Info  */}
 //       <table style={tableStyle}>
 //         <tbody>
 //           <tr>
@@ -373,7 +373,7 @@
 //         </tbody>
 //       </table>
 
-//       {/* ── Attendance Stats ─────────────────────────────────────────────── */}
+//       {/*  Attendance Stats  */}
 //       <table style={tableStyle}>
 //         <tbody>
 //           <tr>
@@ -413,17 +413,17 @@
 //         </tbody>
 //       </table>
 
-//       {/* ── Status Banner ────────────────────────────────────────────────── */}
+//       {/*  Status Banner  */}
 //       <div style={{
 //         padding:'12px 20px', marginBottom:10,
 //         background:sc.bg, border:`2px solid ${sc.border}`,
 //         color:sc.text, fontWeight:700, fontSize:14, textAlign:'center',
 //         borderRadius:4
 //       }}>
-//         {detentionStatus === 'ELIGIBLE' && '✅ ELIGIBLE FOR EXAMINATION — Attendance ≥ 75%'}
+//         {detentionStatus === 'ELIGIBLE' && ' ELIGIBLE FOR EXAMINATION — Attendance ≥ 75%'}
 //         {detentionStatus === 'CONDONATION' && (
 //           <>
-//             ⚠️ CONDONATION — Attendance between 65%–75%. You may pay condonation fee.&nbsp;
+//              CONDONATION — Attendance between 65%–75%. You may pay condonation fee.&nbsp;
 //             <span style={{ fontWeight:400, fontSize:12 }}>
 //               Need {daysToEligible > 0 ? daysToEligible : 0} more present day(s) to reach 75%.
 //             </span>
@@ -431,7 +431,7 @@
 //         )}
 //         {detentionStatus === 'DETAINED' && (
 //           <>
-//             ❌ DETAINED — Attendance below 65%. Not eligible for examination.&nbsp;
+//              DETAINED — Attendance below 65%. Not eligible for examination.&nbsp;
 //             <span style={{ fontWeight:400, fontSize:12 }}>
 //               Need {daysToEligible > 0 ? daysToEligible : 0} more present day(s) to reach 75%.
 //             </span>
@@ -439,7 +439,7 @@
 //         )}
 //       </div>
 
-//       {/* ── Monthly Grid (SBTET Table) ───────────────────────────────────── */}
+//       {/*  Monthly Grid (SBTET Table)  */}
 //       {monthlyData.length > 0 ? (
 //         <div style={{ overflowX:'auto', marginBottom:16 }}>
 //           <table style={{ ...tableStyle, minWidth:960 }}>
@@ -487,7 +487,7 @@
 //         </div>
 //       )}
 
-//       {/* ── Legend ───────────────────────────────────────────────────────── */}
+//       {/*  Legend  */}
 //       <div style={{ display:'flex', gap:28, flexWrap:'wrap', padding:'10px 0', fontSize:13, fontWeight:600 }}>
 //         <span style={{ color:'#2e7d32' }}>P — Present</span>
 //         <span style={{ color:'#c62828' }}>A — Absent</span>
@@ -497,7 +497,7 @@
 //         <span style={{ color:'#e65100' }}>E — Error / Partial</span>
 //       </div>
 
-//       {/* ── Breakdown Cards ──────────────────────────────────────────────── */}
+//       {/*  Breakdown Cards  */}
 //       <div style={{ display:'flex', gap:10, flexWrap:'wrap', marginTop:12 }}>
 //         {[
 //           { label:'Working Days',   val: workingDays,      color:'#1a237e' },
@@ -520,13 +520,13 @@
 //         ))}
 //       </div>
 
-//       {/* ── Per-day impact note ───────────────────────────────────────────── */}
+//       {/*  Per-day impact note  */}
 //       {workingDays > 0 && (
 //         <div style={{
 //           marginTop:14, padding:'10px 16px', background:'#f0f4ff',
 //           border:'1px solid #c5cae9', borderRadius:6, fontSize:13, color:'#1a237e'
 //         }}>
-//           💡 <strong>Each present day adds {(100 / workingDays).toFixed(2)}%</strong> to your attendance
+//            <strong>Each present day adds {(100 / workingDays).toFixed(2)}%</strong> to your attendance
 //           ({workingDays} total working days so far this semester).
 //           {percentage < 75 && (
 //             <span>
@@ -536,21 +536,21 @@
 //         </div>
 //       )}
 
-//       {/* ── Print ─────────────────────────────────────────────────────────── */}
+//       {/*  Print  */}
 //       <div style={{ textAlign:'right', marginTop:24 }}>
 //         <button
 //           className="btn btn-primary"
 //           style={{ padding:'10px 32px' }}
 //           onClick={() => window.print()}
 //         >
-//           🖨️ Print
+//            Print
 //         </button>
 //       </div>
 //     </div>
 //   );
 // }
 
-// // ── Shared cell styles ────────────────────────────────────────────────────────
+// //  Shared cell styles 
 // const tableStyle = {
 //   width:'100%', borderCollapse:'collapse', marginBottom:4, fontSize:13
 // };
@@ -617,7 +617,7 @@ export default function StudentAttendance() {
   const monthlyData = data?.monthlyData || [];
   const studentInfo = data?.student     || {};
 
-  // ── Read all stats fields sent by the fixed backend ────────────────────
+  //  Read all stats fields sent by the fixed backend 
   const workingDays      = stats.workingDays      || 90;   // fixed 90
   const presentDays      = stats.presentDays      || 0;
   const halfDays         = stats.halfDays         || 0;
@@ -631,7 +631,7 @@ export default function StudentAttendance() {
   const perDayImpact     = stats.perDayImpact     ||
     parseFloat((100 / workingDays).toFixed(2));
 
-  // ── lastCalculated — backend sends 05:00 AM, show that ────────────────
+  //  lastCalculated — backend sends 05:00 AM, show that 
   const lastCalculatedStr = (() => {
     const d = stats.lastCalculated ? new Date(stats.lastCalculated) : new Date();
     // Always show 05:00 AM regardless (matches SBTET portal)
@@ -653,7 +653,7 @@ export default function StudentAttendance() {
   return (
     <div className="page fade-in" style={{ maxWidth:1100, margin:'0 auto', fontFamily:'Arial,sans-serif' }}>
 
-      {/* ── Official Header ────────────────────────────────────────────── */}
+      {/*  Official Header  */}
       <div style={{ textAlign:'center', marginBottom:16, padding:'14px 0', borderBottom:'2px solid #1a237e' }}>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:14, flexWrap:'wrap' }}>
           <img
@@ -672,7 +672,7 @@ export default function StudentAttendance() {
         </div>
       </div>
 
-      {/* ── Student Info Table ─────────────────────────────────────────── */}
+      {/*  Student Info Table  */}
       <table style={tableStyle}>
         <tbody>
           <tr>
@@ -698,7 +698,7 @@ export default function StudentAttendance() {
         </tbody>
       </table>
 
-      {/* ── Stats Table ───────────────────────────────────────────────── */}
+      {/*  Stats Table  */}
       <table style={tableStyle}>
         <tbody>
           <tr>
@@ -731,22 +731,22 @@ export default function StudentAttendance() {
         </tbody>
       </table>
 
-      {/* ── Status Banner ─────────────────────────────────────────────── */}
+      {/*  Status Banner  */}
       <div style={{
         padding:'11px 20px', marginBottom:10, borderRadius:4,
         background:sc.bg, border:`2px solid ${sc.border}`,
         color:sc.text, fontWeight:700, fontSize:14, textAlign:'center'
       }}>
-        {detentionStatus === 'ELIGIBLE' && '✅ ELIGIBLE FOR EXAMINATION — Attendance ≥ 75%'}
+        {detentionStatus === 'ELIGIBLE' && ' ELIGIBLE FOR EXAMINATION — Attendance ≥ 75%'}
         {detentionStatus === 'CONDONATION' && (
-          <>⚠️ CONDONATION — Between 65%–75%. You may pay condonation fee.
+          <> CONDONATION — Between 65%–75%. You may pay condonation fee.
             <span style={{ fontWeight:400, fontSize:12, marginLeft:8 }}>
               Need {daysNeededFor75} more present day(s) to reach 75%.
             </span>
           </>
         )}
         {detentionStatus === 'DETAINED' && (
-          <>❌ DETAINED — Attendance below 65%. Not eligible for examination.
+          <> DETAINED — Attendance below 65%. Not eligible for examination.
             <span style={{ fontWeight:400, fontSize:12, marginLeft:8 }}>
               Need {daysNeededFor75} more present day(s) to reach 75%.
             </span>
@@ -754,7 +754,7 @@ export default function StudentAttendance() {
         )}
       </div>
 
-      {/* ── Monthly Attendance Grid ────────────────────────────────────── */}
+      {/*  Monthly Attendance Grid  */}
       {monthlyData.length > 0 ? (
         <div style={{ overflowX:'auto', marginBottom:16 }}>
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:12, minWidth:900 }}>
@@ -777,7 +777,7 @@ export default function StudentAttendance() {
                     {MONTH_NAMES[(m.month || 1) - 1]}
                   </td>
                   {Array.from({ length:31 }, (_, i) => i + 1).map(d => {
-                    // ── KEY FIX: read using String(d) because backend sends
+                    //  KEY FIX: read using String(d) because backend sends
                     //    string keys "5":"P" not integer keys 5:"P"
                     //    Without this fix, m.days?.[5] → undefined → shows "-"
                     //    even when today's attendance IS present in the data.
@@ -805,7 +805,7 @@ export default function StudentAttendance() {
         </div>
       )}
 
-      {/* ── Legend ────────────────────────────────────────────────────── */}
+      {/*  Legend  */}
       <div style={{ display:'flex', gap:24, flexWrap:'wrap', padding:'10px 0', fontSize:13, fontWeight:600 }}>
         <span style={{ color:'#2e7d32' }}>P — Present</span>
         <span style={{ color:'#c62828' }}>A — Absent</span>
@@ -815,7 +815,7 @@ export default function StudentAttendance() {
         <span style={{ color:'#e65100' }}>E — Error / Partial</span>
       </div>
 
-      {/* ── Breakdown cards ───────────────────────────────────────────── */}
+      {/*  Breakdown cards  */}
       <div style={{ display:'flex', gap:10, flexWrap:'wrap', marginTop:10 }}>
         {[
           { label:'Working Days',      val: workingDays,                  color:'#1a237e' },
@@ -838,13 +838,13 @@ export default function StudentAttendance() {
         ))}
       </div>
 
-      {/* ── Per-day impact note ───────────────────────────────────────── */}
+      {/*  Per-day impact note  */}
       <div style={{
         marginTop:12, padding:'10px 16px',
         background:'#f0f4ff', border:'1px solid #c5cae9', borderRadius:6,
         fontSize:13, color:'#1a237e'
       }}>
-        💡 <strong>Each present day adds {perDayImpact}%</strong> to your attendance
+         <strong>Each present day adds {perDayImpact}%</strong> to your attendance
         ({workingDays} total working days this semester).
         {pctNum < 75 && (
           <span>
@@ -853,10 +853,10 @@ export default function StudentAttendance() {
         )}
       </div>
 
-      {/* ── Print ─────────────────────────────────────────────────────── */}
+      {/*  Print  */}
       <div style={{ textAlign:'right', marginTop:20 }}>
         <button className="btn btn-primary" style={{ padding:'10px 32px' }} onClick={() => window.print()}>
-          🖨️ Print
+           Print
         </button>
       </div>
 
@@ -864,7 +864,7 @@ export default function StudentAttendance() {
   );
 }
 
-// ── Shared cell styles ────────────────────────────────────────────────────────
+//  Shared cell styles 
 const tableStyle = { width:'100%', borderCollapse:'collapse', marginBottom:4, fontSize:13 };
 
 const th = {

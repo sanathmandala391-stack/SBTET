@@ -15,14 +15,13 @@ export default function AdminUsers() {
     if (role) p.set('role', role);
     api.get(`/admin/users?${p}`).then(r => setUsers(r.data)).finally(() => setLoading(false));
   };
-
-  useEffect(() => { fetchUsers(); }, [role]);
+  useEffect(fetchUsers, [role]);
 
   const handleApprove = async (userId, isApproved) => {
     try {
       await api.put(`/admin/users/${userId}/approval`, { isApproved });
-      toast.success(isApproved ? 'User approved!' : 'User rejected.');
-      setUsers(u => u.map(x => x.id === userId ? { ...x, isApproved } : x));
+      toast.success(isApproved ? 'User approved!' : 'User revoked.');
+      setUsers(u => u.map(x => (x.id||x._id) === userId ? { ...x, isApproved } : x));
     } catch { toast.error('Action failed.'); }
   };
 
@@ -33,77 +32,81 @@ export default function AdminUsers() {
     u.college?.collegeCode?.includes(search) || u.collegeCode?.includes(search)
   );
 
-  const roleColors = { student: '#1a237e', faculty: '#1b5e20', hod: '#4a148c' };
+  const roleBadge = { student:'#e3f2fd:#0d47a1', faculty:'#e8f5e9:#2e7d32', hod:'#f3e5f5:#4a148c' };
 
   return (
     <div className="page fade-in">
-      <h1 style={{ marginBottom: 8 }}>Manage Users 👥</h1>
-      <p style={{ color: 'var(--text-muted)', marginBottom: 28 }}>All registered users across Telangana polytechnic colleges.</p>
+      <div style={{ background:'#1a237e', color:'#fff', padding:'10px 18px', borderRadius:'4px 4px 0 0', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:8 }}>
+        <span style={{ fontSize:15, fontWeight:700 }}> User Management — All Colleges</span>
+        <span style={{ fontSize:12, opacity:0.8 }}>{filtered.length} record(s)</span>
+      </div>
+      <div style={{ background:'#e8eaf6', padding:'7px 16px', fontSize:12, color:'#546e7a', borderBottom:'1px solid #dee2e6', marginBottom:16 }}>
+        Home &rsaquo; Admin &rsaquo; Users
+      </div>
 
-      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
+      {/* Filters */}
+      <div className="card" style={{ padding:'11px 14px', marginBottom:14, display:'flex', gap:8, flexWrap:'wrap', alignItems:'center' }}>
         <input
-          style={{ padding: '10px 16px', border: '2px solid var(--border)', borderRadius: 10, fontSize: 14, flex: 1, maxWidth: 320, outline: 'none' }}
-          placeholder="Search name, email, PIN, college..." value={search} onChange={e => setSearch(e.target.value)}
+          style={{ padding:'7px 12px', border:'1px solid #dee2e6', borderRadius:3, fontSize:13, flex:1, maxWidth:300 }}
+          placeholder="Search name, email, PIN or college…"
+          value={search} onChange={e => setSearch(e.target.value)}
         />
-        {['', 'student', 'faculty', 'hod'].map(r => (
-          <button key={r} onClick={() => setRole(r)}
-            style={{ padding: '10px 20px', borderRadius: 10, fontWeight: 600, fontSize: 13, border: '2px solid', cursor: 'pointer', transition: '.2s',
-              borderColor: role === r ? 'var(--primary)' : 'var(--border)',
-              background: role === r ? 'var(--primary)' : '#fff',
-              color: role === r ? '#fff' : 'var(--text-muted)' }}>
-            {r === '' ? 'All' : r.toUpperCase()}
+        {['','student','faculty','hod'].map(r => (
+          <button key={r}
+            style={{ padding:'6px 16px', borderRadius:3, fontWeight:600, fontSize:12, border:'1px solid', cursor:'pointer', transition:'.15s',
+              borderColor: role===r ? '#1a237e' : '#dee2e6',
+              background: role===r ? '#1a237e' : '#fff',
+              color: role===r ? '#fff' : '#6c757d' }}
+            onClick={() => setRole(r)}>
+            {r==='' ? 'All Roles' : r.toUpperCase()}
           </button>
         ))}
       </div>
 
-      {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: 60 }}><div className="spinner" /></div>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {filtered.map(u => (
-            <div key={u.id} className="card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-              <div style={{
-                width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
-                background: `linear-gradient(135deg, ${roleColors[u.role] || '#555'}, #777)`,
-                color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontWeight: 700, fontSize: 18
-              }}>{u.name?.charAt(0)}</div>
-
-              <div style={{ flex: 1, minWidth: 200 }}>
-                <div style={{ fontWeight: 700, fontSize: 15 }}>{u.name}</div>
-                <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 3 }}>
-                  {u.email} • {u.college?.collegeName || u.college?.name || u.collegeCode}
-                  {u.pinNumber && ` • PIN: ${u.pinNumber}`}
-                  {u.branch && ` • ${u.branch} ${u.semester}`}
-                  {u.department && ` • ${u.department}`}
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                <span style={{
-                  padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 700,
-                  background: `${roleColors[u.role]}18`, color: roleColors[u.role] || '#555'
-                }}>{u.role?.toUpperCase()}</span>
-
-                <span style={{
-                  padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 700,
-                  background: u.isApproved ? '#e8f5e9' : '#fff3e0',
-                  color: u.isApproved ? '#2e7d32' : '#e65100'
-                }}>{u.isApproved ? 'Approved' : 'Pending'}</span>
-
-                {!u.isApproved ? (
-                  <button className="btn btn-success" style={{ padding: '6px 16px', fontSize: 13 }} onClick={() => handleApprove(u.id, true)}>Approve</button>
-                ) : (
-                  <button className="btn btn-danger" style={{ padding: '6px 16px', fontSize: 13 }} onClick={() => handleApprove(u.id, false)}>Revoke</button>
-                )}
-              </div>
-            </div>
-          ))}
-          {filtered.length === 0 && (
-            <div style={{ textAlign: 'center', padding: 60, color: 'var(--text-muted)', fontSize: 15 }}>No users found</div>
-          )}
-        </div>
-      )}
+      {loading
+        ? <div style={{ display:'flex', justifyContent:'center', padding:60 }}><div className="spinner"/></div>
+        : <div className="card" style={{ overflow:'auto' }}>
+            <table style={{ width:'100%', borderCollapse:'collapse', fontSize:13 }}>
+              <thead>
+                <tr>
+                  {['#','Name','Role','Email','College','PIN / Dept','Branch','Status','Action'].map((h,i) => (
+                    <th key={i} style={{ background:'#1a237e', color:'#fff', padding:'9px 12px', textAlign:'left', fontSize:11, textTransform:'uppercase', letterSpacing:0.4, fontWeight:700, borderRight:'1px solid #283593', whiteSpace:'nowrap' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.length === 0
+                  ? <tr><td colSpan={9} style={{ textAlign:'center', padding:40, color:'#6c757d' }}>No users found</td></tr>
+                  : filtered.map((u,i) => {
+                    const [bg,clr] = (roleBadge[u.role?.toLowerCase()]||'#f5f5f5:#555').split(':');
+                    return (
+                      <tr key={u.id||u._id} style={{ borderBottom:'1px solid #dee2e6', background: i%2===0 ? '#fff' : '#f8f9fb' }}>
+                        <td style={{ padding:'9px 12px', color:'#6c757d' }}>{i+1}</td>
+                        <td style={{ padding:'9px 12px', fontWeight:700 }}>{u.name}</td>
+                        <td style={{ padding:'9px 12px' }}><span style={{ background:bg, color:clr, padding:'2px 9px', borderRadius:3, fontSize:11, fontWeight:700 }}>{u.role?.toUpperCase()}</span></td>
+                        <td style={{ padding:'9px 12px', fontSize:12 }}>{u.email}</td>
+                        <td style={{ padding:'9px 12px', fontSize:12 }}>{u.college?.collegeName||u.college?.name||u.collegeCode||'—'}</td>
+                        <td style={{ padding:'9px 12px', fontSize:12 }}>{u.pinNumber||u.department||'—'}</td>
+                        <td style={{ padding:'9px 12px', fontSize:12 }}>{u.branch ? `${u.branch} ${u.semester}` : '—'}</td>
+                        <td style={{ padding:'9px 12px' }}>
+                          <span style={{ background: u.isApproved ? '#e8f5e9' : '#fff8e1', color: u.isApproved ? '#2e7d32' : '#c8a000', padding:'2px 9px', borderRadius:3, fontSize:11, fontWeight:700 }}>
+                            {u.isApproved ? 'Approved' : 'Pending'}
+                          </span>
+                        </td>
+                        <td style={{ padding:'9px 12px' }}>
+                          {!u.isApproved
+                            ? <button className="btn btn-success" style={{ padding:'4px 12px', fontSize:11 }} onClick={() => handleApprove(u.id||u._id, true)}>Approve</button>
+                            : <button className="btn btn-danger"  style={{ padding:'4px 12px', fontSize:11 }} onClick={() => handleApprove(u.id||u._id, false)}>Revoke</button>
+                          }
+                        </td>
+                      </tr>
+                    );
+                  })
+                }
+              </tbody>
+            </table>
+          </div>
+      }
     </div>
   );
 }
