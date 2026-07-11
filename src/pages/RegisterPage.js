@@ -631,7 +631,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import api from '../utils/api';
-import FaceCamera from '../components/common/FaceCamera';
+import FaceCamera from '../components/common/July11FaceCamera';
 import './AuthPages.css';
 
 const STEPS = ['Role & College', 'Personal Info', 'Face Registration', 'Done'];
