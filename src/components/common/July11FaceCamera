@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import './FaceCamera.css';
+import './July11FaceCamera';
 
 /**
  * FaceCamera — Government biometric scanner (FULL-SCREEN MODAL)
